@@ -1,8 +1,28 @@
 <template>
   <div>
-    <h1>Admin</h1>
-    <h3>Eesnimi </h3> <span>{{firstName}}</span>
-    <h3>Perekonnanimi </h3> <span>{{lastName}}</span>
+
+<!--    <div v-if="displayAddNewCompetition">-->
+<!--      <input placeholder="Uue meeskonna nimi" v-model="teamName">-->
+<!--      <button v-on:click="addNewTeam">Lisa uus meeskond</button>-->
+<!--    </div>-->
+
+<!--    <div v-if="displayEditTeamName">-->
+<!--      <input v-model="teamName">-->
+<!--      <button>Uuenda</button>-->
+<!--    </div>-->
+
+<!--    <br>-->
+<!--    <br>-->
+<!--    <br>-->
+
+<!--    <div v-if="displayAddPlayer">-->
+<!--      <input placeholder="eesnimi" v-model="newPlayer.player.firstName">-->
+<!--      <input placeholder="perekonnanimi" v-model="newPlayer.player.lastName">-->
+<!--      <input placeholder="vanus" v-model="newPlayer.player.age">-->
+<!--    </div>-->
+
+
+
   </div>
 </template>
 
@@ -15,6 +35,10 @@ export default {
       lastName: this.$route.query.lastName
     }
   },
+  methods: {
+
+  }
+
 }
 </script>
 
