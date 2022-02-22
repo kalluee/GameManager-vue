@@ -32,7 +32,10 @@
           <td>
             <button>x</button></td>
         </tr>
+
       </table>
+      <br>
+      <button>Salvesta</button>
     </div>
 
 
@@ -117,8 +120,7 @@ export default {
       }).catch(error => {
         console.log(error)
       })
-    }
-    ,
+    },
     hideAllDivs: function () {
       this.displayAddNewTeam = false
       this.displayEditTeamName = false
