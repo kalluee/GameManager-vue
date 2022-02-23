@@ -8,7 +8,7 @@
 
     <div v-if="displayEditTeamName">
       <input v-model="teamName">
-      <button>Uuenda</button>
+      <button>Muuda</button>
     </div>
 
 
@@ -17,9 +17,9 @@
       <br>
       <table>
         <tr>
-          <th>eesnimi</th>
-          <th>perekonnanimi</th>
-          <th>vanus</th>
+          <th>Eesnimi</th>
+          <th>Perekonnanimi</th>
+          <th>Vanus</th>
           <th></th>
           <th></th>
         </tr>
@@ -28,9 +28,11 @@
           <td><input v-model="row.lastName"></td>
           <td><input v-model="row.age"></td>
           <td>
-            <button>muuda</button></td>
+            <button v-on:click="">Muuda</button>
+          </td>
           <td>
-            <button>x</button></td>
+            <button v-on:click="removeRow">x</button>
+          </td>
         </tr>
 
       </table>
@@ -48,7 +50,6 @@
       <input placeholder="vanus" v-model="newPlayer.player.age">
       <button v-on:click="addNewPlayer">Lisa mängija</button>
     </div>
-
 
   </div>
 </template>
@@ -95,6 +96,7 @@ export default {
         console.log(error)
       })
     },
+
     addNewPlayer: function () {
       this.newPlayer.teamId = sessionStorage.getItem('teamId')
       this.$http.post("/team/player", this.newPlayer
@@ -109,6 +111,8 @@ export default {
         console.log(error)
       })
     },
+
+
     findTeamPlayers: function () {
       this.$http.get("/team/player/all", {
             params: {
@@ -121,6 +125,7 @@ export default {
         console.log(error)
       })
     },
+
     hideAllDivs: function () {
       this.displayAddNewTeam = false
       this.displayEditTeamName = false
@@ -128,6 +133,7 @@ export default {
       this.displayPlayersTable = false
     }
   }
+
 }
 </script>
 
