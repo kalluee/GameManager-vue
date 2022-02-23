@@ -96,6 +96,7 @@ export default {
       })
     },
     addNewPlayer: function () {
+
       this.newPlayer.teamId = sessionStorage.getItem('teamId')
       this.$http.post("/team/player", this.newPlayer
       ).then(response => {

@@ -16,6 +16,8 @@
     <br>
 
     <div v-if="displayAddPlayer">
+      <br>
+      <br>
       <input placeholder="eesnimi" v-model="newPlayer.player.firstName">
       <input placeholder="perekonnanimi" v-model="newPlayer.player.lastName">
       <input placeholder="vanus" v-model="newPlayer.player.age">
