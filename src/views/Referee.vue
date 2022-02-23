@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="displayCompetitionTable">
+    <div v-if="displayCompetitions">
       <br>
       <h5>Vali võistlus</h5>
       <br>
@@ -13,6 +13,32 @@
     </div>
 
     <div v-if="displayGamesTable">
+      <br>
+      <br>
+      <table>
+        <tr>
+          <th>Mängu tüüp</th>
+          <th>Mängu nimi</th>
+          <th>Rühmade arv</th>
+          <th></th>
+          <th></th>
+        </tr>
+        <tr v-for="row in allGames">
+          <td><input v-model="row.firstName"></td>
+          <td><input v-model="row.lastName"></td>
+          <td><input v-model="row.age"></td>
+          <td>
+            <button>Muuda</button></td>
+        </tr>
+
+      </table>
+      <br>
+      <button>Salvesta</button>
+
+    </div>
+
+
+    <div v-if="displayTeamsTable">
       <br>
       <br>
       <table>
@@ -64,9 +90,8 @@ export default {
       allCompetitions:{},
       allGames:{},
 
-      displayCompetitionTable: true,
+      displayCompetitions: true,
       displayGamesTable:false,
-
       firstName: this.$route.query.firstName,
       lastName: this.$route.query.lastName
     }
@@ -82,6 +107,12 @@ export default {
         console.log(error)
       })
     },
+    hideAllDivs: function () {
+      this.displayCompetitions = false
+      this.displayGamesTable = false
+      this.displayTeamsTable = false
+    },
+
     beforeMount() {
       this.findAllCompetitions()
     }
