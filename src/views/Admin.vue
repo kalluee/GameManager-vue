@@ -36,7 +36,7 @@
         </tr>
         <br>
       </table>
-      <button v-on:click="addGameInCompetition">Salvesta</button>
+      <button>Salvesta</button>
 
     </div>
 
