@@ -31,7 +31,6 @@
         </tr>
 
         <tr v-for="row in allGames">
-          <!--          <td><input v-model="row.newGame.game.gameTypeId"></td>-->
           <td><input v-model="row.gameName"></td>
         </tr>
         <br>
@@ -41,29 +40,6 @@
     </div>
 
 
-    <!--    <div v-if="displayGamesTable"><br><br>-->
-    <!--      <table>-->
-    <!--        <tr>-->
-    <!--          <th>Mängu nimi</th>-->
-    <!--          <th></th>-->
-    <!--          <th></th>-->
-    <!--        </tr>-->
-
-    <!--        <tr v-for="row in allGames">-->
-
-    <!--          <td><input v-model="row.gameName"></td>-->
-    <!--          <td>-->
-    <!--            <button v-on:click="">Muuda</button>-->
-    <!--          </td>-->
-    <!--          <td>-->
-    <!--            <button v-on:click="removeRow">x</button>-->
-    <!--          </td>-->
-    <!--        </tr>-->
-
-    <!--      </table>-->
-    <!--      <br>-->
-    <!--      <button>Salvesta</button>-->
-    <!--    </div>-->
 
   </div>
 </template>
