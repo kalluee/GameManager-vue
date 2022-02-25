@@ -13,16 +13,19 @@
     </div>
 
     <div v-if="displayAddGame">
-      <h5>Lisa mäng</h5>
 
+      <h5>Lisa mäng</h5>
+      <br>
       <select v-model="selectedGameTypeId">
         <option v-for="gameType in gameTypes" :value="gameType.id">{{ gameType.name }}</option>
       </select>
+
+      <br>
       <input placeholder="Mängu nimi" v-model="gameName">
-      <br><br>
+      <br>
       <button v-on:click="addNewGame">Loo uus mäng</button>
-      <button></button>
     </div>
+
 
     <div v-if="displayGamesTable">
       <table>
@@ -33,13 +36,13 @@
         <tr v-for="row in allGames">
 
           <td><input v-model="row.gameName"></td>
+
         </tr>
         <br>
       </table>
+      <br>
       <button>Salvesta</button>
-
     </div>
-
 
   </div>
 </template>
@@ -76,7 +79,6 @@ export default {
   },
 
   methods: {
-
     addNewCompetition: function () {
       this.$http.post("/competition/add", null, {
             params: {
@@ -106,7 +108,7 @@ export default {
     },
 
     addNewGame: function () {
-      this.newGame.competitionId = sessionStorage.getItem('competitionId')
+      this.newGame.competitionId = sessionStorage.getItem("competitionId")
       this.newGame.gameTypeId = this.selectedGameTypeId
       this.newGame.gameName = this.gameName
       this.$http.post("/game/add/game", this.newGame
@@ -119,6 +121,7 @@ export default {
         alert("success")
       })
     },
+
     findGamesInCompetition: function () {
       this.$http.get("/competition/game/all", {
             params: {
@@ -131,8 +134,6 @@ export default {
         console.log(error)
       })
     },
-
-
     hideAllDivs: function () {
       this.displayAddNewCompetition = false
       this.displayEditCompetitionName = false
@@ -141,7 +142,7 @@ export default {
     }
   },
   beforeMount() {
-    this.getAllGameTypes()
+  this.getAllGameTypes()
   }
 }
 </script>
