@@ -14,13 +14,16 @@
     <div v-if="displayAddPlayer"><br><br>
       <h5>Lisa mängija</h5>
 
-      <input placeholder="eesnimi" v-model="newPlayer.player.firstName">
-      <input placeholder="perekonnanimi" v-model="newPlayer.player.lastName">
+      <input placeholder="Eesnimi" v-model="newPlayer.player.firstName">
+      <input placeholder="Perekonnanimi" v-model="newPlayer.player.lastName">
       <input placeholder="vanus" v-model="newPlayer.player.age">
-      <button v-on:click="addPlayerInTeam">Lisa mängija</button>
+      <button v-on:click="addPlayerInTeam">Salvesta mängija</button>
     </div>
 
+
+
     <div v-if="displayPlayersTable"><br><br>
+      <h5>Salvestatud mängijad</h5>
       <table>
         <tr>
           <th>Eesnimi</th>
@@ -30,17 +33,17 @@
           <th></th>
         </tr>
 
-        <tr v-for="row in allPlayers">
-
-          <td><input v-model="row.firstName"></td>
-          <td><input v-model="row.lastName"></td>
-          <td><input v-model="row.age"></td>
-          <td><button>Muuda</button></td>
+        <tr v-for="player in allPlayers">
+          <td><input v-model="player.firstName"></td>
+          <td><input v-model="player.lastName"></td>
+          <td><input v-model="player.age"></td>
+          <td><button v-on:click="updatePlayerInfo(player)">Muuda</button></td>
           <td><button>x</button></td>
         </tr>
       </table>
       <br>
       <button>Salvesta</button>
+
     </div>
 
 
@@ -69,10 +72,30 @@ export default {
       displayAddNewTeam: true,
       displayEditTeamName: false,
       displayAddPlayer: false,
-      displayPlayersTable: false
+      displayPlayersTable: false,
+      displayAllPlayersTable: false
     }
   },
   methods: {
+    updatePlayerInfo: function (player) {
+      this.$http.put("/player/update", player, {
+            params: {
+              teamPlayerId: player.teamPlayerId
+            }
+          }
+      ).then(response => {
+        this.hideAllDivs()
+        this.displayEditTeamName = true
+        this.displayAddPlayer = true
+        this.displayPlayersTable = true
+        this.teamId = response.data.teamId
+        sessionStorage.setItem('teamId', this.teamId)
+        alert("Mängija info muudetud!")
+      }).catch(error => {
+        alert(error)
+        console.log(error)
+      })
+    },
 
     addNewTeam: function () {
       this.$http.post("/team/new", null, {
@@ -126,9 +149,9 @@ export default {
       this.displayEditTeamName = false
       this.displayAddPlayer = false
       this.displayPlayersTable = false
+      this.displayAllPlayersTable = false
     }
   }
-
 }
 </script>
 

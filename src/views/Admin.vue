@@ -25,17 +25,31 @@
       <br>
       <button v-on:click="addNewGame">Loo uus mäng</button>
     </div>
-
+    <br>
+    <br>
 
     <div v-if="displayGamesTable">
+      <h5>Võistluse mängud</h5>
       <table>
         <tr>
+          <th>Vali</th>
+          <th>Tüüp</th>
           <th>Mängu nimi</th>
+          <th></th>
+          <th></th>
         </tr>
 
         <tr v-for="row in allGames">
-
+          <td><input type="checkbox" v-model="selectAll" @click="select"></td>
+          <td><input v-model="row.gameTypeName"></td>
           <td><input v-model="row.gameName"></td>
+
+          <td>
+            <button>Muuda nime</button>
+          </td>
+          <td>
+            <button>x</button>
+          </td>
 
         </tr>
         <br>
@@ -56,17 +70,21 @@ export default {
       competitionId: 0,
       gameName: "",
       allGames: {},
-      tableGameName: "",
+
+      select: false,
+      selected: [],
+      selectAll: false,
 
       newGame: {
         competitionId: 0,
-        gameTypeId: 0,
         gameName: "",
-
+        gameTypeId: 0,
+        gameTypeName: ""
       },
+
       options: {},
       gameTypes: [],
-      selectedGameTypeId: 10,
+      selectedGameTypeId: 0,
       displayAddNewCompetition: true,
       displayEditCompetitionName: false,
       displayAddGame: false,
@@ -79,6 +97,7 @@ export default {
   },
 
   methods: {
+
     addNewCompetition: function () {
       this.$http.post("/competition/add", null, {
             params: {
@@ -115,10 +134,8 @@ export default {
       ).then(response => {
         this.displayGamesTable = true
         this.findGamesInCompetition()
-        alert("success")
       }).catch(error => {
         alert(error)
-        alert("success")
       })
     },
 
@@ -134,6 +151,7 @@ export default {
         console.log(error)
       })
     },
+
     hideAllDivs: function () {
       this.displayAddNewCompetition = false
       this.displayEditCompetitionName = false
@@ -142,7 +160,7 @@ export default {
     }
   },
   beforeMount() {
-  this.getAllGameTypes()
+    this.getAllGameTypes()
   }
 }
 </script>
