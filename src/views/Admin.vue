@@ -25,22 +25,31 @@
       <br>
       <button v-on:click="addNewGame">Loo uus mäng</button>
     </div>
-
+    <br>
+    <br>
 
     <div v-if="displayGamesTable">
+      <h5>Võistluse mängud</h5>
       <table>
         <tr>
+          <th>Vali</th>
           <th>Tüüp</th>
           <th>Mängu nimi</th>
+          <th></th>
+          <th></th>
         </tr>
 
         <tr v-for="row in allGames">
-
+          <td><input type="checkbox" v-model="selectAll" @click="select"></td>
           <td><input v-model="row.gameTypeName"></td>
           <td><input v-model="row.gameName"></td>
 
-          <td><button>Muuda nime</button></td>
-          <td><button>x</button></td>
+          <td>
+            <button>Muuda nime</button>
+          </td>
+          <td>
+            <button>x</button>
+          </td>
 
         </tr>
         <br>
@@ -62,13 +71,17 @@ export default {
       gameName: "",
       allGames: {},
 
+      select: false,
+      selected: [],
+      selectAll: false,
+
       newGame: {
         competitionId: 0,
         gameName: "",
         gameTypeId: 0,
         gameTypeName: ""
-
       },
+
       options: {},
       gameTypes: [],
       selectedGameTypeId: 0,
