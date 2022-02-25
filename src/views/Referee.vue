@@ -4,49 +4,49 @@
     <div v-if="displayCompetitions">
       <br>
       <h5>Vali võistlus</h5>
-      <br>
-      <select v-model="selectedCompetitionId">
+      <select v-model="selectedCompetitionId" v-on:change="findCompetitionGames">
         <option disabled value = "0">Võistlus</option>
         <option v-for="competition in allCompetitions" :value="competition.id">{{competition.name}}</option>
       </select>
       <br>
-      <button>Kinnita</button>
+      <br>
     </div>
 
     <div v-if="displayGames">
       <br>
       <h5>Vali mäng</h5>
+      <select v-model="selectedGameId" v-on:change="findAllTeamsByGameId">
+        <option disabled value="0">Mängud</option>
+        <option v-for="game in allGamesInCompetition" :value="game.gameInCompetitionId">{{game.gameName}}</option>
+      </select>
       <br>
-
-
       <br>
-      <button>Salvesta</button>
-
     </div>
-
 
     <div v-if="displayTeamsTable">
       <br>
       <br>
       <table>
         <tr>
-          <th>Mängu tüüp</th>
-          <th>Mängu nimi</th>
-          <th>Rühmade arv</th>
-          <th></th>
-          <th></th>
+          <th>Meeskonna nimi</th>
+          <th v-if="gameTypeId == 1">Aeg sekundites</th>
+          <th v-if="gameTypeId == 2">punktid</th>
+          <th>tulemus</th>
         </tr>
-        <tr v-for="row in allGames">
-          <td><input v-model="row.firstName"></td>
-          <td><input v-model="row.lastName"></td>
-          <td><input v-model="row.age"></td>
-          <td>
-            <button>Muuda</button></td>
+        <tr v-for="score in allTeamScores">
+          <td>{{score.teamName}}</td>
+          <td v-if="gameTypeId == 1"><input v-model="score.timeInSeconds"></td>
+          <td v-if="gameTypeId == 2"><input v-model="score.refereeScore"></td>
+          <td><input v-model="score.points"></td>
         </tr>
+
 
       </table>
       <br>
-      <button>Salvesta</button>
+      <br>
+      <button v-on:click="updateScores">Salvesta muudatused</button>
+
+
 
     </div>
 
@@ -58,20 +58,22 @@ export default {
   name: "Referee",
   data: function () {
     return {
-      competitonName:"",
-      competitonId: 0,
-      gameName: "",
-      newGame:{
-        competitionId: 0,
-        game: {
-          gameName:""
-        }
+      competitionName:"",
+      competitionId: 0,
+      gameTypeId: 0,
+      allGamesInCompetition:{
+        gameInCompetitionId: 0,
+        competitionName:"",
+        gameName:""
       },
+      allTeamScores: {},
       options:{},
       selectedCompetitionId: 0,
+      selectedGameId: 0,
       allCompetitions:{},
       displayCompetitions: true,
-      displayGames:false
+      displayGames:false,
+      displayTeamsTable: false
 
     }
   },
@@ -90,6 +92,60 @@ export default {
         console.log(error)
       })
     },
+
+    findCompetitionGames: function () {
+      this.$http.get("/competition/game/all", {
+            params: {
+              competitionId: this.selectedCompetitionId
+            }
+          }
+      ).then(response => {
+        this.hideAllDivs()
+        this.displayCompetitions = true
+        this.displayGames = true
+        this.allGamesInCompetition = response.data
+        this.newGame.competitionId = this.selectedCompetitionId
+        this.newGame.game.gameName = this.gameName
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    findAllTeamsByGameId: function () {
+      this.$http.get("/score/all/teams/by/gameid", {
+            params: {
+              gameId: this.selectedGameId
+            }
+          }
+      ).then(response => {
+        this.gameTypeId = response.data.gameTypeId
+        this.allTeamScores = response.data.scoreDetails
+        this.displayTeamsTable = true
+        console.log(response.data)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    updateScores: function () {
+      this.$http.put("/score/scores", this.allTeamScores
+      ).then(response => {
+        console.log(response.data)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+
+    // findAllGames: function () {
+    //   this.$http.get("/some/path", {
+    //         params: {
+    //           someParam: this.someVariable
+    //         }
+    //       }
+    //   ).then(response => {
+    //     console.log(response.data)
+    //   }).catch(error => {
+    //     console.log(error)
+    //   })
+    // },
 
     hideAllDivs: function () {
       this.displayCompetitions = false
