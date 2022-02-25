@@ -39,8 +39,6 @@
           <td v-if="gameTypeId == 2"><input v-model="score.refereeScore"></td>
           <td><input v-model="score.points"></td>
         </tr>
-
-
       </table>
       <br>
       <br>
