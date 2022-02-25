@@ -24,6 +24,7 @@
       <input placeholder="Mängu nimi" v-model="gameName">
       <br>
       <button v-on:click="addGame">Loo uus mäng</button>
+    </div>
 
     <div v-if="displayAddPlayer">
       <br>

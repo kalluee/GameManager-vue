@@ -1,37 +1,24 @@
 <template>
   <div>
+
     <div v-if="displayCompetitions">
       <br>
       <h5>Vali võistlus</h5>
       <br>
-      <select v-model="allCompetitions">
-        <option v-for="competitionName in allCompetitions" value="competitionName">{{competitonName.name}}</option>
+      <select v-model="selectedCompetitionId">
+        <option disabled value = "0">Võistlus</option>
+        <option v-for="competition in allCompetitions" :value="competition.id">{{competition.name}}</option>
       </select>
       <br>
-      <button v-on:click="displayGamesTable">Kinnita</button>
-
+      <button>Kinnita</button>
     </div>
 
-    <div v-if="displayGamesTable">
+    <div v-if="displayGames">
       <br>
+      <h5>Vali mäng</h5>
       <br>
-      <table>
-        <tr>
-          <th>Mängu tüüp</th>
-          <th>Mängu nimi</th>
-          <th>Rühmade arv</th>
-          <th></th>
-          <th></th>
-        </tr>
-        <tr v-for="row in allGames">
-          <td><input v-model="row.firstName"></td>
-          <td><input v-model="row.lastName"></td>
-          <td><input v-model="row.age"></td>
-          <td>
-            <button>Muuda</button></td>
-        </tr>
 
-      </table>
+
       <br>
       <button>Salvesta</button>
 
@@ -73,49 +60,42 @@ export default {
     return {
       competitonName:"",
       competitonId: 0,
+      gameName: "",
       newGame:{
         competitionId: 0,
         game: {
           gameName:""
         }
       },
-
-    // {
-    //   "gameInCompetitionId": 0,
-    //     "competitionName": "string",
-    //     "gameName": "string"
-    // }
-
-
+      options:{},
+      selectedCompetitionId: 0,
       allCompetitions:{},
-      allGames:{},
-
       displayCompetitions: true,
-      displayGamesTable:false,
-      firstName: this.$route.query.firstName,
-      lastName: this.$route.query.lastName
+      displayGames:false
+
     }
   },
-
+  beforeMount() {
+    this.findAllCompetitions()
+  },
   methods:{
     findAllCompetitions: function () {
       this.$http.get("/competition/get/all")
           .then(response => {
+            this.hideAllDivs()
+            this.displayCompetitions = true
             this.allCompetitions = response.data
             console.log(response.data)
           }).catch(error => {
         console.log(error)
       })
     },
+
     hideAllDivs: function () {
       this.displayCompetitions = false
-      this.displayGamesTable = false
+      this.displayGames = false
       this.displayTeamsTable = false
     },
-
-    beforeMount() {
-      this.findAllCompetitions()
-    }
   }
 
 }
