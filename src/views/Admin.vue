@@ -13,49 +13,57 @@
     </div>
 
     <div v-if="displayAddGame">
-
       <h5>Lisa mäng</h5>
-      <br>
+
       <select v-model="selectedGameTypeId">
         <option v-for="gameType in gameTypes" :value="gameType.id">{{ gameType.name }}</option>
       </select>
-
-      <br>
       <input placeholder="Mängu nimi" v-model="gameName">
-      <br>
-      <button v-on:click="addGame">Loo uus mäng</button>
-
-
+      <br><br>
+      <button v-on:click="addNewGame">Loo uus mäng</button>
+      <button></button>
     </div>
-
 
     <div v-if="displayGamesTable">
-      <br>
-      <br>
       <table>
         <tr>
-          <th>Eesnimi</th>
-          <th>Perekonnanimi</th>
-          <th>Vanus</th>
-          <th></th>
-          <th></th>
-        </tr>
-        <tr v-for="row in allPlayers">
-          <td><input v-model="row.firstName"></td>
-          <td><input v-model="row.lastName"></td>
-          <td><input v-model="row.age"></td>
-          <td>
-            <button v-on:click="">Muuda</button>
-          </td>
-          <td>
-            <button v-on:click="removeRow">x</button>
-          </td>
+          <th>Mängu nimi</th>
         </tr>
 
+        <tr v-for="row in allGames">
+          <!--          <td><input v-model="row.newGame.game.gameTypeId"></td>-->
+          <td><input v-model="row.gameName"></td>
+        </tr>
+        <br>
       </table>
-      <br>
-      <button>Salvesta</button>
+      <button v-on:click="addGameInCompetition">Salvesta</button>
+
     </div>
+
+
+    <!--    <div v-if="displayGamesTable"><br><br>-->
+    <!--      <table>-->
+    <!--        <tr>-->
+    <!--          <th>Mängu nimi</th>-->
+    <!--          <th></th>-->
+    <!--          <th></th>-->
+    <!--        </tr>-->
+
+    <!--        <tr v-for="row in allGames">-->
+
+    <!--          <td><input v-model="row.gameName"></td>-->
+    <!--          <td>-->
+    <!--            <button v-on:click="">Muuda</button>-->
+    <!--          </td>-->
+    <!--          <td>-->
+    <!--            <button v-on:click="removeRow">x</button>-->
+    <!--          </td>-->
+    <!--        </tr>-->
+
+    <!--      </table>-->
+    <!--      <br>-->
+    <!--      <button>Salvesta</button>-->
+    <!--    </div>-->
 
   </div>
 </template>
@@ -68,17 +76,18 @@ export default {
       competitionName: "",
       competitionId: 0,
       gameName: "",
+      allGames: {},
+      tableGameName: "",
+
       newGame: {
         competitionId: 0,
-        game: {
-          gameTypeId: 0,
-          gameId: 0,
-          name: "",
-        },
+        gameTypeId: 0,
+        gameName: "",
+
       },
       options: {},
       gameTypes: [],
-      selectedGameTypeId: 0,
+      selectedGameTypeId: 10,
       displayAddNewCompetition: true,
       displayEditCompetitionName: false,
       displayAddGame: false,
@@ -91,6 +100,7 @@ export default {
   },
 
   methods: {
+
     addNewCompetition: function () {
       this.$http.post("/competition/add", null, {
             params: {
@@ -101,29 +111,11 @@ export default {
         this.hideAllDivs()
         this.displayEditCompetitionName = true
         this.displayAddGame = true
-        this.competitionId = response.data.competitionId
+        this.competitionId = response.data.id
         sessionStorage.setItem('competitionId', this.competitionId)
-
-        console.log(response.data)
-
       }).catch(error => {
         alert(error)
         console.log(error)
-      })
-    },
-
-    addGame: function () {
-      this.$http.post("/game/add/game", null, {
-            params: {
-              gameTypeId: this.selectedGameTypeId,
-              gameName: this.gameName
-            }
-          }
-      ).then(response => {
-        alert("success")
-      }).catch(error => {
-        alert(error)
-        alert("success")
       })
     },
 
@@ -133,6 +125,33 @@ export default {
             this.gameTypes = response.data
             console.log(response.data)
           }).catch(error => {
+        console.log(error)
+      })
+    },
+
+    addNewGame: function () {
+      this.newGame.competitionId = sessionStorage.getItem('competitionId')
+      this.newGame.gameTypeId = this.selectedGameTypeId
+      this.newGame.gameName = this.gameName
+      this.$http.post("/game/add/game", this.newGame
+      ).then(response => {
+        this.displayGamesTable = true
+        this.findGamesInCompetition()
+        alert("success")
+      }).catch(error => {
+        alert(error)
+        alert("success")
+      })
+    },
+    findGamesInCompetition: function () {
+      this.$http.get("/competition/game/all", {
+            params: {
+              competitionId: this.competitionId
+            }
+          }
+      ).then(response => {
+        this.allGames = response.data
+      }).catch(error => {
         console.log(error)
       })
     },

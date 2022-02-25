@@ -11,10 +11,16 @@
       <button>Muuda</button>
     </div>
 
+    <div v-if="displayAddPlayer"><br><br>
+      <h5>Lisa mängija</h5>
 
-    <div v-if="displayPlayersTable">
-      <br>
-      <br>
+      <input placeholder="eesnimi" v-model="newPlayer.player.firstName">
+      <input placeholder="perekonnanimi" v-model="newPlayer.player.lastName">
+      <input placeholder="vanus" v-model="newPlayer.player.age">
+      <button v-on:click="addPlayerInTeam">Lisa mängija</button>
+    </div>
+
+    <div v-if="displayPlayersTable"><br><br>
       <table>
         <tr>
           <th>Eesnimi</th>
@@ -23,33 +29,20 @@
           <th></th>
           <th></th>
         </tr>
+
         <tr v-for="row in allPlayers">
+
           <td><input v-model="row.firstName"></td>
           <td><input v-model="row.lastName"></td>
           <td><input v-model="row.age"></td>
-          <td>
-            <button v-on:click="">Muuda</button>
-          </td>
-          <td>
-            <button v-on:click="removeRow">x</button>
-          </td>
+          <td><button>Muuda</button></td>
+          <td><button>x</button></td>
         </tr>
-
       </table>
       <br>
       <button>Salvesta</button>
     </div>
 
-
-    <div v-if="displayAddPlayer">
-      <br>
-      <br>
-      <h5>Lisa mängija</h5>
-      <input placeholder="eesnimi" v-model="newPlayer.player.firstName">
-      <input placeholder="perekonnanimi" v-model="newPlayer.player.lastName">
-      <input placeholder="vanus" v-model="newPlayer.player.age">
-      <button v-on:click="addNewPlayer">Lisa mängija</button>
-    </div>
 
   </div>
 </template>
@@ -72,6 +65,7 @@ export default {
       allPlayers: {},
       firstName: this.$route.query.firstName,
       lastName: this.$route.query.lastName,
+
       displayAddNewTeam: true,
       displayEditTeamName: false,
       displayAddPlayer: false,
@@ -79,6 +73,7 @@ export default {
     }
   },
   methods: {
+
     addNewTeam: function () {
       this.$http.post("/team/new", null, {
             params: {
@@ -97,14 +92,14 @@ export default {
       })
     },
 
-    addNewPlayer: function () {
+    addPlayerInTeam: function () {
       this.newPlayer.teamId = sessionStorage.getItem('teamId')
       this.$http.post("/team/player", this.newPlayer
       ).then(response => {
         this.newPlayer.player.firstName = null
         this.newPlayer.player.lastName = null
         this.newPlayer.player.age = null
-        this.findTeamPlayers()
+        this.findPlayersInTeam()
         this.displayPlayersTable = true
       }).catch(error => {
         alert("Error")
@@ -113,7 +108,7 @@ export default {
     },
 
 
-    findTeamPlayers: function () {
+    findPlayersInTeam: function () {
       this.$http.get("/team/player/all", {
             params: {
               teamId: this.teamId
