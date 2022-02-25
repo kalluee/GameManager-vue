@@ -57,7 +57,6 @@
       <br>
       <button>Salvesta</button>
     </div>
-    <br>
 
   </div>
 </template>
