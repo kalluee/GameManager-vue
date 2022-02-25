@@ -14,8 +14,8 @@
     <div v-if="displayAddPlayer"><br><br>
       <h5>Lisa mängija</h5>
 
-      <input placeholder="eesnimi" v-model="newPlayer.player.firstName">
-      <input placeholder="perekonnanimi" v-model="newPlayer.player.lastName">
+      <input placeholder="Eesnimi" v-model="newPlayer.player.firstName">
+      <input placeholder="Perekonnanimi" v-model="newPlayer.player.lastName">
       <input placeholder="vanus" v-model="newPlayer.player.age">
       <button v-on:click="addPlayerInTeam">Salvesta mängija</button>
     </div>
