@@ -25,7 +25,7 @@
     </div>
 
 
-    <div v-if="displayTeamsTable">
+    <div v-if="dis">
       <br>
       <br>
       <table>
@@ -78,6 +78,7 @@ export default {
   beforeMount() {
     this.findAllCompetitions()
   },
+
   methods:{
     findAllCompetitions: function () {
       this.$http.get("/competition/get/all")

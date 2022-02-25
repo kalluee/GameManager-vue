@@ -30,12 +30,17 @@
     <div v-if="displayGamesTable">
       <table>
         <tr>
+          <th>Tüüp</th>
           <th>Mängu nimi</th>
         </tr>
 
         <tr v-for="row in allGames">
 
+          <td><input v-model="row.gameTypeName"></td>
           <td><input v-model="row.gameName"></td>
+
+          <td><button>Muuda nime</button></td>
+          <td><button>x</button></td>
 
         </tr>
         <br>
@@ -56,17 +61,17 @@ export default {
       competitionId: 0,
       gameName: "",
       allGames: {},
-      tableGameName: "",
 
       newGame: {
         competitionId: 0,
-        gameTypeId: 0,
         gameName: "",
+        gameTypeId: 0,
+        gameTypeName: ""
 
       },
       options: {},
       gameTypes: [],
-      selectedGameTypeId: 10,
+      selectedGameTypeId: 0,
       displayAddNewCompetition: true,
       displayEditCompetitionName: false,
       displayAddGame: false,
@@ -79,6 +84,7 @@ export default {
   },
 
   methods: {
+
     addNewCompetition: function () {
       this.$http.post("/competition/add", null, {
             params: {
@@ -115,10 +121,8 @@ export default {
       ).then(response => {
         this.displayGamesTable = true
         this.findGamesInCompetition()
-        alert("success")
       }).catch(error => {
         alert(error)
-        alert("success")
       })
     },
 
@@ -134,6 +138,7 @@ export default {
         console.log(error)
       })
     },
+
     hideAllDivs: function () {
       this.displayAddNewCompetition = false
       this.displayEditCompetitionName = false
@@ -142,7 +147,7 @@ export default {
     }
   },
   beforeMount() {
-  this.getAllGameTypes()
+    this.getAllGameTypes()
   }
 }
 </script>
