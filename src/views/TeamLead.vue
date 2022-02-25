@@ -2,8 +2,8 @@
   <div>
 
     <div v-if="displayAddNewTeam">
-      <input placeholder="Uue meeskonna nimi" v-model="teamName">
-      <button v-on:click="addNewTeam">Lisa uus meeskond</button>
+      <input placeholder="Rühma nimi" v-model="teamName">
+      <button v-on:click="addNewTeam">Lisa rühm</button>
     </div>
 
     <div v-if="displayEditTeamName">
@@ -12,18 +12,18 @@
     </div>
 
     <div v-if="displayAddPlayer"><br><br>
-      <h5>Lisa mängija</h5>
+      <h5>Lisa malevlane</h5>
 
       <input placeholder="Eesnimi" v-model="newPlayer.player.firstName">
       <input placeholder="Perekonnanimi" v-model="newPlayer.player.lastName">
       <input placeholder="vanus" v-model="newPlayer.player.age">
-      <button v-on:click="addPlayerInTeam">Salvesta mängija</button>
+      <button v-on:click="addPlayerInTeam">Salvesta</button>
     </div>
 
 
 
     <div v-if="displayPlayersTable"><br><br>
-      <h5>Salvestatud mängijad</h5>
+      <h5>Rühma nimekiri</h5>
       <table>
         <tr>
           <th>Eesnimi</th>

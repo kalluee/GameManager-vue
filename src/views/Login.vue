@@ -43,7 +43,7 @@ export default {
       switch (selectedRole) {
 
         case 1:
-          alert("Mine admin lehele")
+          // alert("Mine admin lehele")
           this.$router.push({
             name: 'Admin', query: {
               firstName: this.firstName,
@@ -53,7 +53,7 @@ export default {
           break;
 
         case 2:
-          alert("Mine kohtuniku lehele")
+          // alert("Mine kohtuniku lehele")
           this.$router.push({
             name: 'Referee', query: {
               firstName: this.firstName,
@@ -63,7 +63,7 @@ export default {
           break;
 
         case 3:
-          alert("Mine rühmajuhi lehele")
+          // alert("Mine rühmajuhi lehele")
           this.$router.push({
             name: 'TeamLead', query: {
               firstName: this.firstName,
@@ -75,7 +75,6 @@ export default {
     },
 
     login: function () {
-
       this.$http.get("/login/user", {
             params: {
               userName: this.userName,
@@ -86,20 +85,16 @@ export default {
         this.firstName = response.data.firstName
         this.lastName = response.data.lastName
         this.rolesSize = response.data.roles.length
-
         this.selectedRole = response.data.roles[0].roleId
-
         alert("Tere tulemast " + response.data.firstName + " " + response.data.lastName)
         console.log(response.data)
-
-
         sessionStorage.setItem('userId', response.data.userId)
 
         if (this.rolesSize > 1) {
           this.displayLoginButton = false;
           this.options = response.data.roles
-        } else {
 
+        } else {
           this.roleId = response.data.roles[0].roleId;
           this.moveToRelevantPage(this.roleId);
         }

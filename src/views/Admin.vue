@@ -2,8 +2,8 @@
   <div>
 
     <div v-if="displayAddNewCompetition">
-      <input placeholder="Uue võistluse nimi" v-model="competitionName">
-      <button v-on:click="addNewCompetition">Lisa uus võistlus</button>
+      <input placeholder="Uue sündmuse nimi" v-model="competitionName">
+      <button v-on:click="addNewCompetition">Lisa uus sündmus</button>
     </div>
 
 
