@@ -1,7 +1,7 @@
 <template>
   <div>
     <input placeholder="Kasutajanimi" v-model="userName"><br>
-    <input placeholder="Parool" v-model="password"><br>
+    <input type="password" placeholder="Parool" v-model="password"><br>
 
     <div v-if="displayLoginButton">
       <button v-on:click="login">Logi sisse</button>
