@@ -16,7 +16,7 @@
 
       <input placeholder="Eesnimi" v-model="newPlayer.player.firstName">
       <input placeholder="Perekonnanimi" v-model="newPlayer.player.lastName">
-      <input placeholder="vanus" v-model="newPlayer.player.age">
+      <input placeholder="Vanus" v-model="newPlayer.player.age">
       <button v-on:click="addPlayerInTeam">Salvesta</button>
     </div>
 
@@ -38,7 +38,7 @@
           <td><input v-model="player.lastName"></td>
           <td><input v-model="player.age"></td>
           <td><button v-on:click="updatePlayerInfo(player)">Muuda</button></td>
-          <td><button>x</button></td>
+          <td><button v-on:click="deletePlayer(player.teamPlayerId)">x</button></td>
         </tr>
       </table>
       <br>
@@ -65,6 +65,7 @@ export default {
           age: null
         }
       },
+      teamPlayerId: 0,
       allPlayers: {},
       firstName: this.$route.query.firstName,
       lastName: this.$route.query.lastName,
@@ -88,8 +89,8 @@ export default {
         this.displayEditTeamName = true
         this.displayAddPlayer = true
         this.displayPlayersTable = true
-        this.teamId = response.data.teamId
-        sessionStorage.setItem('teamId', this.teamId)
+        // sessionStorage.setItem('teamId', this.teamId)
+        // sessionStorage.setItem('teamPlayerId', player.teamPlayerId)
         alert("Mängija info muudetud!")
       }).catch(error => {
         alert(error)
@@ -130,6 +131,24 @@ export default {
       })
     },
 
+    deletePlayer: function (teamPlayerId) {
+      this.$http.delete("/player/delete", {
+            params: {
+              teamPlayerId: teamPlayerId
+            }
+          }
+      ).then(response => {
+        this.hideAllDivs()
+        this.displayEditTeamName = true
+        this.displayAddPlayer = true
+        this.displayPlayersTable = true
+        alert("Mängija kustutatud!")
+        this.findPlayersInTeam()
+      }).catch(error => {
+        alert(error)
+        console.log(error)
+      })
+    },
 
     findPlayersInTeam: function () {
       this.$http.get("/team/player/all", {
