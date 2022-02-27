@@ -130,7 +130,6 @@ export default {
         console.log(error)
       })
     },
-
     deletePlayer: function (teamPlayerId) {
       this.$http.delete("/player/delete", {
             params: {
