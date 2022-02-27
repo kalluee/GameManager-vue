@@ -78,6 +78,7 @@ export default {
     }
   },
   methods: {
+
     updatePlayerInfo: function (player) {
       this.$http.put("/player/update", player, {
             params: {

@@ -132,18 +132,7 @@ export default {
       })
     },
 
-    // findAllGames: function () {
-    //   this.$http.get("/some/path", {
-    //         params: {
-    //           someParam: this.someVariable
-    //         }
-    //       }
-    //   ).then(response => {
-    //     console.log(response.data)
-    //   }).catch(error => {
-    //     console.log(error)
-    //   })
-    // },
+
 
     hideAllDivs: function () {
       this.displayCompetitions = false

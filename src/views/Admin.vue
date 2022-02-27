@@ -13,15 +13,16 @@
     </div>
 
     <div v-if="displayAddGame">
-
-      <h5>Lisa mäng</h5>
       <br>
+      <h3>Lisa mäng</h3>
+      <br>
+
       <select v-model="selectedGameTypeId">
         <option v-for="gameType in gameTypes" :value="gameType.id">{{ gameType.name }}</option>
       </select>
 
-      <br>
       <input placeholder="Mängu nimi" v-model="gameName">
+      <br>
       <br>
       <button v-on:click="addNewGame">Loo uus mäng</button>
     </div>
@@ -29,7 +30,7 @@
     <br>
 
     <div v-if="displayGamesTable">
-      <h5>Võistluse mängud</h5>
+      <h3>Võistluse mängud</h3>
       <table>
         <tr>
           <th>Vali</th>
@@ -39,23 +40,16 @@
           <th></th>
         </tr>
 
-        <tr v-for="row in allGames">
-          <td><input type="checkbox" v-model="selectAll" @click="select"></td>
-          <td><input v-model="row.gameTypeName"></td>
-          <td><input v-model="row.gameName"></td>
+        <tr v-for="game in allGames">
+          <td><input type="checkbox" v-model="selectAll" @click="selected"></td>
+          <td><input v-model="game.gameTypeName"></td>
+          <td><input v-model="game.gameName"></td>
 
-          <td>
-            <button>Muuda nime</button>
-          </td>
-          <td>
-            <button>x</button>
-          </td>
-
+          <td><button>Muuda</button></td>
+          <td><button v-on:click="deleteGameInCompetition(game.gameInCompetitionId)">x</button></td>
         </tr>
-        <br>
       </table>
       <br>
-      <button>Salvesta</button>
     </div>
 
   </div>
@@ -66,6 +60,7 @@ export default {
   name: "Admin",
   data: function () {
     return {
+      gameInCompetitionId: 0,
       competitionName: "",
       competitionId: 0,
       gameName: "",
@@ -73,7 +68,7 @@ export default {
 
       select: false,
       selected: [],
-      selectAll: false,
+      selectAll: true,
 
       newGame: {
         competitionId: 0,
@@ -97,6 +92,25 @@ export default {
   },
 
   methods: {
+
+    deleteGameInCompetition: function (gameInCompetitionId) {
+      this.$http.delete("/competition/delete/game", {
+            params: {
+              gameInCompetitionId: gameInCompetitionId
+            }
+          }
+      ).then(response => {
+        this.hideAllDivs()
+        this.displayEditCompetitionName = true
+        this.displayAddGame = true
+        this.displayGamesTable = true
+        alert("Mäng kustutatud")
+        this.findGamesInCompetition()
+      }).catch(error => {
+        alert(error)
+        console.log(error)
+      })
+    },
 
     addNewCompetition: function () {
       this.$http.post("/competition/add", null, {
@@ -151,6 +165,19 @@ export default {
         console.log(error)
       })
     },
+
+
+    // //------------------------------------------------------
+    //
+    // select() {
+    //   this.selected = [];
+    //   if (this.selectAll) {
+    //     for (let i in this.items) {
+    //       this.selected.push(this.items[i].id);
+    //     }
+    //   }
+    // },
+    // //-----------------------------------------------
 
     hideAllDivs: function () {
       this.displayAddNewCompetition = false
