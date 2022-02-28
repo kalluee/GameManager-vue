@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <img alt="EOM logo" src="../assets/EOMlogo.png">
-    <h1>Tere tulemast Tallinna Õpilasmaleva
-      <br>kokkutuleku info lehele</h1>
+    <img alt="EOM logo" width="400" src="../assets/EOMlogo.png">
+    <h1>Tallinna Õpilasmaleva
+      <br>kokkutuleku info</h1>
 <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
   </div>
 </template>
