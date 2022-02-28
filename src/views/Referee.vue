@@ -1,6 +1,7 @@
 <template>
   <div>
 
+    <h1>Võistlustulemuste sisestamine</h1>
     <div v-if="displayCompetitions">
       <br>
       <h5>Vali võistlus</h5>
@@ -132,15 +133,12 @@ export default {
       })
     },
 
-
-
     hideAllDivs: function () {
       this.displayCompetitions = false
       this.displayGames = false
       this.displayTeamsTable = false
     },
   }
-
 }
 </script>
 

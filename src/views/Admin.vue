@@ -1,30 +1,48 @@
 <template>
   <div>
+    <div v-if="displayChooseAction">
+
+      <button v-on:click="openAddNewCompetition">Lisa uus sündmus</button>
+      <button v-on:click="openChooseCompetition">Lisa mäng olemasolevale sündmusele</button>
+
+    </div>
+    <br>
+    <br>
 
     <div v-if="displayAddNewCompetition">
       <input placeholder="Uue sündmuse nimi" v-model="competitionName">
       <button v-on:click="addNewCompetition">Lisa uus sündmus</button>
     </div>
 
-
     <div v-if="displayEditCompetitionName">
       <input v-model="competitionName">
       <button>Muuda</button>
     </div>
 
+    <div v-if="displayChooseGame">
+      <br>
+      <h3>Vali sündmus</h3>
+      <br>
+
+      <select v-model="selectedCompetitionId">
+        <option v-for="competition in availableCompetitions" :value="competition.id">{{ competition.name }}</option>
+      </select>
+      <br>
+      <br>
+      <button v-on:click="displayGamesInCompetition">Vali sündmus</button>
+    </div>
+
     <div v-if="displayAddGame">
       <br>
-      <h3>Lisa mäng</h3>
+      <h3>Lisa mäng sündmusele</h3>
       <br>
 
       <select v-model="selectedGameTypeId">
         <option v-for="gameType in gameTypes" :value="gameType.id">{{ gameType.name }}</option>
-      </select>
-
-      <input placeholder="Mängu nimi" v-model="gameName">
+      </select> <input placeholder="Mängu nimi" v-model="gameName">
       <br>
       <br>
-      <button v-on:click="addNewGame">Loo uus mäng</button>
+      <button v-on:click="addNewGame">Lisa uus mäng</button>
     </div>
     <br>
     <br>
@@ -33,20 +51,16 @@
       <h3>Võistluse mängud</h3>
       <table>
         <tr>
-          <th>Vali</th>
           <th>Tüüp</th>
           <th>Mängu nimi</th>
-          <th></th>
           <th></th>
         </tr>
 
         <tr v-for="game in allGames">
-          <td><input type="checkbox" v-model="selectAll" @click="selected"></td>
-          <td><input v-model="game.gameTypeName"></td>
-          <td><input v-model="game.gameName"></td>
+          <td>{{ game.gameTypeName }}</td>
+          <td>{{ game.gameName }}</td>
 
-          <td><button>Muuda</button></td>
-          <td><button v-on:click="deleteGameInCompetition(game.gameInCompetitionId)">x</button></td>
+            <button v-on:click="deleteGameInCompetition(game.gameInCompetitionId)">x</button>
         </tr>
       </table>
       <br>
@@ -64,6 +78,7 @@ export default {
       competitionName: "",
       competitionId: 0,
       gameName: "",
+      availableCompetitions: {},
       allGames: {},
 
       select: false,
@@ -80,10 +95,14 @@ export default {
       options: {},
       gameTypes: [],
       selectedGameTypeId: 0,
-      displayAddNewCompetition: true,
+      selectedGameId: 0,
+      selectedCompetitionId: 0,
+      displayAddNewCompetition: false,
       displayEditCompetitionName: false,
       displayAddGame: false,
       displayGamesTable: false,
+      displayChooseAction: true,
+      displayChooseGame: false,
 
       date: function () {
         return Date.now();
@@ -92,6 +111,39 @@ export default {
   },
 
   methods: {
+
+    openAddNewCompetition: function () {
+      this.displayAddNewCompetition = true
+      this.displayChooseAction = false
+    },
+
+    openChooseCompetition: function () {
+      this.displayChooseGame = true
+      this.displayChooseAction = false
+
+      this.$http.get("/competition/get/all")
+          .then(response => {
+            this.availableCompetitions = response.data
+            console.log(response.data)
+          }).catch(error => {
+        console.log(error)
+      })
+    },
+
+    displayGamesInCompetition: function () {
+      this.competitionId = this.selectedCompetitionId;
+      sessionStorage.setItem('competitionId', this.competitionId)
+      for (let index in this.availableCompetitions) {
+        if (this.availableCompetitions[index].id == this.selectedCompetitionId)
+         this.competitionName = this.availableCompetitions[index].name
+      }
+      this.findGamesInCompetition()
+      this.hideAllDivs()
+      this.displayAddGame = true
+      this.displayAddGame = true
+      this.displayEditCompetitionName = true
+      this.displayGamesTable = true
+    },
 
     deleteGameInCompetition: function (gameInCompetitionId) {
       this.$http.delete("/competition/delete/game", {
@@ -148,6 +200,7 @@ export default {
       ).then(response => {
         this.displayGamesTable = true
         this.findGamesInCompetition()
+        this.gameName = ""
       }).catch(error => {
         alert(error)
       })
@@ -166,24 +219,12 @@ export default {
       })
     },
 
-
-    // //------------------------------------------------------
-    //
-    // select() {
-    //   this.selected = [];
-    //   if (this.selectAll) {
-    //     for (let i in this.items) {
-    //       this.selected.push(this.items[i].id);
-    //     }
-    //   }
-    // },
-    // //-----------------------------------------------
-
     hideAllDivs: function () {
       this.displayAddNewCompetition = false
       this.displayEditCompetitionName = false
       this.displayAddGame = false
       this.displayGamesTable = false
+      this.displayChooseGame = false
     }
   },
   beforeMount() {
