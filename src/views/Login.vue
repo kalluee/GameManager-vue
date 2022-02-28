@@ -8,6 +8,7 @@
     </div>
 
     <div v-if="rolesSize > 1">
+      <br>
       <select v-model="selectedRole">
         <option v-for="option in options" :value="option.roleId">{{ option.roleName }}</option>
       </select>

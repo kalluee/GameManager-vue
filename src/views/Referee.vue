@@ -31,8 +31,8 @@
         <tr>
           <th>Meeskonna nimi</th>
           <th v-if="gameTypeId == 1">Aeg sekundites</th>
-          <th v-if="gameTypeId == 2">punktid</th>
-          <th>tulemus</th>
+          <th v-if="gameTypeId == 2">Punktid</th>
+          <th>Tulemus</th>
         </tr>
         <tr v-for="score in allTeamScores">
           <td>{{score.teamName}}</td>
@@ -103,8 +103,8 @@ export default {
         this.displayCompetitions = true
         this.displayGames = true
         this.allGamesInCompetition = response.data
-        this.newGame.competitionId = this.selectedCompetitionId
-        this.newGame.game.gameName = this.gameName
+        // this.newGame.competitionId = this.selectedCompetitionId
+        // this.newGame.game.gameName = this.gameName
       }).catch(error => {
         console.log(error)
       })

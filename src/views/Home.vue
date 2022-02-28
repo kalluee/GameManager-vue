@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <img alt="EOM logo" src="../assets/EOMlogo.png">
     <h1>Tere tulemast Tallinna Õpilasmaleva
       <br>kokkutuleku info lehele</h1>
 <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
@@ -18,3 +18,10 @@ export default {
   }
 }
 </script>
+<style>
+body{}
+.image-resize{
+  height: 400px;
+}
+
+</style>
